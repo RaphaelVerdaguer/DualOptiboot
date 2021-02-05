@@ -572,7 +572,7 @@ void CheckFlashImage() {
   FLASH_UNSELECT;
   
   //check if any flash image exists on external FLASH chip
-  if (FLASH_readByte(0)=='F' && FLASH_readByte(1)=='L' && FLASH_readByte(2)=='X' && FLASH_readByte(6)==':' && FLASH_readByte(9)==':')
+  if (FLASH_readByte(0)=='F' && FLASH_readByte(1)=='L' && FLASH_readByte(2)=='X' && FLASH_readByte(9)==':')
   {
 #ifdef DEBUG_ON
     putch('L');
