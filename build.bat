@@ -1,0 +1,2 @@
+make atmega328 AVR_FREQ=8000000L BAUD_RATE=19200 LED=D6
+pause

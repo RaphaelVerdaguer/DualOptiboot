@@ -1,5 +1,5 @@
 
-Dualoptiboot_v5.0_atmega328_.elf:     file format elf32-avr
+Dualoptiboot_v5.0_atmega328_8000000L_19200_D6.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
@@ -90,7 +90,7 @@ int main(void) {
     7c2a:	86 e0       	ldi	r24, 0x06	; 6
     7c2c:	80 93 c2 00 	sts	0x00C2, r24
   UART_SRL = (uint8_t)( (F_CPU + BAUD_RATE * 4L) / (BAUD_RATE * 8L) - 1 );
-    7c30:	80 e1       	ldi	r24, 0x10	; 16
+    7c30:	83 e3       	ldi	r24, 0x33	; 51
     7c32:	80 93 c4 00 	sts	0x00C4, r24
 #endif
 #endif
@@ -103,7 +103,7 @@ int main(void) {
 #if (LED_START_FLASHES > 0) || defined(LED_DATA_FLASH)
   /* Set LED pin as output */
   LED_DDR |= _BV(LED);
-    7c3a:	21 9a       	sbi	0x04, 1	; 4
+    7c3a:	56 9a       	sbi	0x0a, 6	; 10
     7c3c:	86 e0       	ldi	r24, 0x06	; 6
 }
 
@@ -111,8 +111,8 @@ int main(void) {
 void flash_led(uint8_t count) {
   do {
     TCNT1 = -(F_CPU/(1024*16));
-    7c3e:	20 e3       	ldi	r18, 0x30	; 48
-    7c40:	3c ef       	ldi	r19, 0xFC	; 252
+    7c3e:	28 e1       	ldi	r18, 0x18	; 24
+    7c40:	3e ef       	ldi	r19, 0xFE	; 254
     TIFR1 = _BV(TOV1);
     7c42:	91 e0       	ldi	r25, 0x01	; 1
 }
@@ -132,7 +132,7 @@ void flash_led(uint8_t count) {
     LED_PORT ^= _BV(LED);
 #else
     LED_PIN |= _BV(LED);
-    7c52:	19 9a       	sbi	0x03, 1	; 3
+    7c52:	4e 9a       	sbi	0x09, 6	; 9
 }
 #endif
 
@@ -610,7 +610,7 @@ void putch(char ch) {
   LED_PORT ^= _BV(LED);
 #else
   LED_PIN |= _BV(LED);
-    7e14:	19 9a       	sbi	0x03, 1	; 3
+    7e14:	4e 9a       	sbi	0x09, 6	; 9
       [uartBit] "I" (UART_RX_BIT)
     :
       "r25"
@@ -645,7 +645,7 @@ void watchdogReset() {
   LED_PORT ^= _BV(LED);
 #else
   LED_PIN |= _BV(LED);
-    7e2c:	19 9a       	sbi	0x03, 1	; 3
+    7e2c:	4e 9a       	sbi	0x09, 6	; 9
 #endif
 #endif
 
@@ -853,7 +853,7 @@ void CheckFlashImage() {
     uint16_t b, i, nextAddress=0;
     
     LED_PIN |= _BV(LED);
-    7f18:	19 9a       	sbi	0x03, 1	; 3
+    7f18:	4e 9a       	sbi	0x09, 6	; 9
     7f1a:	c0 e0       	ldi	r28, 0x00	; 0
     7f1c:	d0 e0       	ldi	r29, 0x00	; 0
     7f1e:	cc 24       	eor	r12, r12
@@ -961,7 +961,7 @@ void CheckFlashImage() {
       }
     }
     LED_PIN &= ~_BV(LED);
-    7f98:	19 98       	cbi	0x03, 1	; 3
+    7f98:	4e 98       	cbi	0x09, 6	; 9
 
 #if defined(RWWSRE)
     // Reenable read access to flash

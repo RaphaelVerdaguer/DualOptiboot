@@ -95,7 +95,7 @@ AVRDUDE_CONF =
 endif
 
 STK500 = "C:\Program Files\Atmel\AVR Tools\STK500\Stk500.exe"
-STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET)_$(AVR_FREQ).hex \
+STK500-1 = $(STK500) -e -d$(MCU_TARGET) -pf -vf -if$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE)_$(LED).hex \
            -lFF -LFF -f$(HFUSE)$(LFUSE) -EF8 -ms -q -cUSB -I200kHz -s -wt
 STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 #
@@ -215,37 +215,16 @@ virboot328: MCU_TARGET = atmega328p
 virboot328: CFLAGS += $(COMMON_OPTIONS) '-DVIRTUAL_BOOT'
 virboot328: AVR_FREQ ?= 16000000L
 virboot328: LDSECTIONS  = -Wl,--section-start=.text=0x7e00 -Wl,--section-start=.version=0x7ffe
-virboot328: $(PROGRAM)_atmega328_$(AVR_FREQ).hex
-virboot328: $(PROGRAM)_atmega328_$(AVR_FREQ).lst
-
-# Diecimila, Duemilanove with m168, and NG use identical bootloaders
-# Call it "atmega168" for generality and clarity, keep "diecimila" for
-# backward compatibility of makefile
-#
-atmega168: TARGET = atmega168
-atmega168: MCU_TARGET = atmega168
-atmega168: CFLAGS += $(COMMON_OPTIONS)
-atmega168: AVR_FREQ ?= 16000000L 
-atmega168: $(PROGRAM)_atmega168_$(AVR_FREQ).hex
-atmega168: $(PROGRAM)_atmega168_$(AVR_FREQ).lst
-
-atmega168_isp: atmega168
-atmega168_isp: TARGET = atmega168
-# 2.7V brownout
-atmega168_isp: HFUSE ?= DD
-# Low power xtal (16MHz) 16KCK/14CK+65ms
-atmega168_isp: LFUSE ?= FF
-# 512 byte boot
-atmega168_isp: EFUSE ?= 04
-atmega168_isp: isp
+virboot328: $(PROGRAM)_atmega328_$(AVR_FREQ)_$(BAUD_RATE)_$(LED).hex
+virboot328: $(PROGRAM)_atmega328_$(AVR_FREQ)_$(BAUD_RATE)_$(LED).lst
 
 atmega328: TARGET = atmega328
 atmega328: MCU_TARGET = atmega328p
 atmega328: CFLAGS += $(COMMON_OPTIONS)
 atmega328: AVR_FREQ ?= 16000000L
 atmega328: LDSECTIONS  = -Wl,--section-start=.text=0x7c00 -Wl,--section-start=.version=0x7ffe
-atmega328: $(PROGRAM)_atmega328_$(AVR_FREQ).hex
-atmega328: $(PROGRAM)_atmega328_$(AVR_FREQ).lst
+atmega328: $(PROGRAM)_atmega328_$(AVR_FREQ)_$(BAUD_RATE)_$(LED).hex
+atmega328: $(PROGRAM)_atmega328_$(AVR_FREQ)_$(BAUD_RATE)_$(LED).lst
 
 atmega328_isp: atmega328
 atmega328_isp: TARGET = atmega328
@@ -274,7 +253,7 @@ baudcheck: FORCE
 isp: $(TARGET)
 	$(MAKE) -f Makefile.isp isp TARGET=$(TARGET)
 
-isp-stk500: $(PROGRAM)_$(TARGET)_$(AVR_FREQ).hex
+isp-stk500: $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE)_$(LED).hex
 	$(STK500-1)
 	$(STK500-2)
 
