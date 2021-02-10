@@ -73,8 +73,8 @@ ISPFUSES    = $(AVRDUDE_ROOT)avrdude $(AVRDUDE_CONF) -c $(ISPTOOL) \
 # program flash and lock memory.
 ISPFLASH    = $(AVRDUDE_ROOT)avrdude $(AVRDUDE_CONF) -c $(ISPTOOL) \
               -p $(MCU_TARGET) -P $(ISPPORT) $(ISPSPEED) \
-              -U flash:w:$(PROGRAM)_$(TARGET).hex -U lock:w:0x2f:m
+              -U flash:w:$(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE)_$(LED).hex -U lock:w:0x2f:m
 
-isp: $(PROGRAM)_$(TARGET).hex
+isp: $(PROGRAM)_$(TARGET)_$(AVR_FREQ)_$(BAUD_RATE)_$(LED).hex
 	$(ISPFUSES)
 	$(ISPFLASH)
